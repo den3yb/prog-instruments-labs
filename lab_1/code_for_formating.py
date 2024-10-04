@@ -2,9 +2,9 @@ from tkinter import *
 import numpy as np 
 import pandas as pd
 
-#from gui_
+# From gui_
 
-#list for all symptoms
+# List for all symptoms
 symptoms = ['back_pain','constipation','abdominal_pain','diarrhoea','mild_fever','yellow_urine',
 'yellowing_of_eyes','acute_liver_failure','fluid_overload','swelling_of_stomach',
 'swelled_lymph_nodes','malaise','blurred_and_distorted_vision','phlegm','throat_irritation',
@@ -36,15 +36,15 @@ disease = ['Fungal infection','Allergy','GERD','Chronic cholestasis','Drug React
 'Arthritis','(vertigo) Paroymsal  Positional Vertigo','Acne','Urinary tract infection','Psoriasis',
 'Impetigo']
 
-# loop will be used when doing prediction we need to add all symptoms in symptoms list 
+# Loop will be used when doing prediction we need to add all symptoms in symptoms list 
 l2 = [0] * len(symptoms)
 import os
 print("Current working directory:", os.getcwd())
 
-#Testing data df 
+# Testing data df 
 df = pd.read_csv("Training.csv")
 
-#change names in the last column of prognosis to be numbers 
+# Change names in the last column of prognosis to be numbers 
 df.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
 'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
 'Migraine':11,'Cervical spondylosis':12,
@@ -55,14 +55,14 @@ df.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic chol
 '(vertigo) Paroymsal  Positional Vertigo':36,'Acne':37,'Urinary tract infection':38,'Psoriasis':39,
 'Impetigo':40}},inplace = True)
 
-#x data is symptoms 
+# X data is symptoms 
 x = df[symptoms]
 
-#diseases which disease is exist 
+# Diseases which disease is exist 
 y = df[["prognosis"]]
 np.ravel(y)
 
-#Training data tr
+# Training data tr
 tr = pd.read_csv("Testing.csv")
 tr.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
 'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
@@ -79,43 +79,43 @@ y_test = tr[["prognosis"]]
 np.ravel(y_test)
 
 
-#Algorithms for training and prediction we will use 3 algorithm
+# Algorithms for training and prediction we will use 3 algorithm
 
 def DecisionTree():
     from sklearn import tree
-    clf3=tree.DecisionTreeClassifier() #empty model for decision tree 
-    #training x with y 
+    clf3=tree.DecisionTreeClassifier() # Empty model for decision tree 
+    # Training x with y 
     clf3 = clf3.fit(x,y)
     
-    #calculating accuracy 
+    # Calculating accuracy 
     from sklearn.metrics import accuracy_score
     y_pred=clf3.predict(x_test)
     print(accuracy_score(y_test,y_pred))
     print(accuracy_score(y_test,y_pred, normalize=False))
    
-   #we add the following line here to make sure that it will be restting every time i try to predict new disicion 
+    # We add the following line here to make sure that it will be restting every time i try to predict new disicion 
     l2 = [0] * len(symptoms)
     psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
-    #check if any of symptoms is exist replace its 0 value by 1 to check the desiease
+    # Check if any of symptoms is exist replace its 0 value by 1 to check the desiease
     for k in range(0,len(symptoms)):
         #print(k,)
         for z in psymptoms:
-# if symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
+    # If symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
             if(z == symptoms[k]):
                 l2[k] = 1
                 break
     inputtest=[l2]
     print(l2)
-    #prediction the disease based on given syptoms
+    # Prediction the disease based on given syptoms
     predict=clf3.predict(inputtest)
-    #to take it values 
+    # To take it values 
     predicted=predict[0]
     h='no'
     for a in range(0,len(disease)):
         if(predicted == a ):
             h ='yes'
         if (h == 'yes'):
-            #if the disease is found put its name in the text box t1 after deleting whats inside the box 
+            # If the disease is found put its name in the text box t1 after deleting whats inside the box 
             t1.delete("1.0",END)
             t1.insert(END,disease[a])
     
@@ -123,40 +123,40 @@ def DecisionTree():
             t1.delete("1.0",END)
             t1.insert(END,"Not Found")
             
-#second algorithm
+# Second algorithm
 def randomforest():
     from sklearn.ensemble import RandomForestClassifier 
     clf4=RandomForestClassifier()
     clf4 = clf4.fit(x,np.ravel(y))
     
     
-    #calculating accuracy
+    # Calculating accuracy
     from sklearn.metrics import accuracy_score
     y_pred=clf4.predict(x_test)
     print(accuracy_score(y_test,y_pred))
     print(accuracy_score(y_test,y_pred, normalize=False))
     l2 = [0] * len(symptoms)
     psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
-    #check if any of symptoms is exist replace its 0 value by 1 to check the desiease
+    # Check if any of symptoms is exist replace its 0 value by 1 to check the desiease
     for k in range(0,len(symptoms)):
         #print(k,)
         for z in psymptoms:
-# if symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
+# If symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
             if(z == symptoms[k]):
                 l2[k] = 1
                 break
     inputtest=[l2]
     print(l2)
-    #prediction the disease based on given syptoms
+    # Prediction the disease based on given syptoms
     predict=clf4.predict(inputtest)
-    #to take it values 
+    # To take it values 
     predicted=predict[0]
     h='no'
     for a in range(0,len(disease)):
         if(predicted == a ):
             h = 'yes'
         if (h == 'yes'):
-            #if the disease is found put its name in the text box t1 after deleting whats inside the box 
+            # If the disease is found put its name in the text box t1 after deleting whats inside the box 
             t2.delete("1.0",END)
             t2.insert(END,disease[a])
     
@@ -164,19 +164,17 @@ def randomforest():
             t2.delete("1.0",END)
             t2.insert(END,"Not Found")
 
-#Third algo 
+# Third algo 
 
 def NaiveBayes():
     from sklearn.naive_bayes import GaussianNB
     gnb = GaussianNB()
     gnb = gnb.fit(x,np.ravel(y))
 
-    # calculating accuracy-------------------------------------------------------------------
-    from sklearn.metrics import accuracy_score
+    # Calculating accuracy
     y_pred = gnb.predict(x_test)
     print(accuracy_score(y_test, y_pred))
     print(accuracy_score(y_test, y_pred,normalize=False))
-    # -----------------------------------------------------
 
     psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
     for k in range(0,len(symptoms)):
@@ -202,12 +200,12 @@ def NaiveBayes():
         t3.insert(END, "Not Found")
     
 
-# gui_stuff-------------------------------
-#creates the main window of the GU
+# Gui_stuff-------------------------------
+# Creates the main window of the GU
 root=Tk()
 root.configure()
 
-#entry variables 
+# Entry variables 
 Symptom1=StringVar()
 Symptom1.set(None)
 Symptom2=StringVar()
@@ -220,7 +218,7 @@ Symptom5=StringVar()
 Symptom5.set(None)
 Name=StringVar()
  
- #Headings
+# Headings
 w2 = Label(root,justify = LEFT,text = "Diseases Predictor using Machine Learning")
 w2.config(font = ("Elephant",30))
 w2.grid(row = 1,column = 0,columnspan = 4,padx = 100)
@@ -228,7 +226,7 @@ w2 = Label(root, justify = LEFT, text = "A Project by Aya Samir", fg = "white", 
 w2.config(font=("Aharoni", 30))
 w2.grid(row = 2, column = 0, columnspan = 2, padx = 100)
 
-#Labels
+# Labels
 
 NameLb = Label(root,text = "Name of the Patient",fg = "yellow",bg = "black")
 NameLb.grid(row = 6,column = 0,pady = 15,sticky = W)
@@ -258,7 +256,7 @@ destreeLb.grid(row = 17, column = 0, pady = 10, sticky = W)
 ranfLb = Label(root, text = "NaiveBayes", fg = "white", bg = "red")
 ranfLb.grid(row = 19, column = 0, pady = 10, sticky = W)
 
-# entries
+# Entries
 OPTIONS = sorted(symptoms)
 
 NameEn = Entry(root, textvariable=Name)
@@ -289,7 +287,7 @@ rnf.grid(row = 9, column = 3,padx = 10)
 lr = Button(root, text = "NaiveBayes", command = NaiveBayes,bg = "green",fg = "yellow")
 lr.grid(row = 10, column = 3,padx = 10)
 
-#textfileds
+# Textfileds
 t1 = Text(root, height = 1, width = 40,bg = "orange",fg = "black")
 t1.grid(row = 15, column = 1, padx = 10)
 
@@ -299,5 +297,5 @@ t2.grid(row = 17, column = 1 , padx = 10)
 t3 = Text(root, height = 1, width = 40,bg="orange",fg = "black")
 t3.grid(row = 19, column = 1 , padx = 10)
 
-#to enter and run GUI 
+# To enter and run GUI 
 root.mainloop()
