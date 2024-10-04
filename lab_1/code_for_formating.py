@@ -4,7 +4,6 @@ import pandas as pd
 from tkinter import *
 
 # From gui_
-
 # List for all symptoms
 symptoms = [
     "back_pain",
@@ -270,8 +269,7 @@ np.ravel(y_test)
 
 
 # Algorithms for training and prediction we will use 3 algorithm
-
-def DecisionTree():
+def decision_tree():
     from sklearn import tree
     clf3=tree.DecisionTreeClassifier() # Empty model for decision tree 
     # Training x with y 
@@ -314,7 +312,7 @@ def DecisionTree():
             t1.insert(END,"Not Found")
             
 # Second algorithm
-def randomforest():
+def random_forest():
     from sklearn.ensemble import RandomForestClassifier 
     clf4=RandomForestClassifier()
     clf4 = clf4.fit(x, np.ravel(y))
@@ -354,8 +352,7 @@ def randomforest():
             t2.insert(END, "Not Found")
 
 # Third algo 
-
-def NaiveBayes():
+def naive_bayes():
     from sklearn.naive_bayes import GaussianNB
     gnb = GaussianNB()
     gnb = gnb.fit(x, np.ravel(y))
@@ -416,7 +413,6 @@ w2.config(font=("Aharoni", 30))
 w2.grid(row = 2, column = 0, columnspan = 2, padx = 100)
 
 # Labels
-
 NameLb = Label(root, text = "Name of the Patient", fg = "yellow", bg = "black")
 NameLb.grid(row = 6, column = 0, pady = 15, sticky = W)
 
@@ -434,7 +430,6 @@ S4Lb.grid(row = 10, column = 0, pady = 10, sticky = W)
 
 S5Lb = Label(root, text="Symptom 5", fg="yellow", bg="black")
 S5Lb.grid(row = 11, column = 0, pady = 10, sticky = W)
-
 
 lrLb = Label(root, text="DecisionTree", fg="white", bg="red")
 lrLb.grid(row = 15, column = 0, pady = 10,sticky = W)
@@ -466,14 +461,13 @@ S4En.grid(row = 10, column = 1)
 S5En = OptionMenu(root, Symptom5, *OPTIONS)
 S5En.grid(row = 11, column = 1)
 
-
-dst = Button(root, text = "DecisionTree", command=DecisionTree, bg = "green", fg = "yellow")
+dst = Button(root, text = "DecisionTree", command=decision_tree, bg = "green", fg = "yellow")
 dst.grid(row = 8, column = 3,padx = 10)
 
-rnf = Button(root, text = "Randomforest", command = randomforest, bg = "green", fg = "yellow")
+rnf = Button(root, text = "Randomforest", command = random_forest, bg = "green", fg = "yellow")
 rnf.grid(row = 9, column = 3,padx = 10)
 
-lr = Button(root, text = "NaiveBayes", command = NaiveBayes, bg = "green", fg = "yellow")
+lr = Button(root, text = "NaiveBayes", command = naive_bayes, bg = "green", fg = "yellow")
 lr.grid(row = 10, column = 3,padx = 10)
 
 # Textfileds
