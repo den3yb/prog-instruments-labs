@@ -1,6 +1,7 @@
-from tkinter import *
 import numpy as np 
 import pandas as pd
+
+from tkinter import *
 
 # From gui_
 
