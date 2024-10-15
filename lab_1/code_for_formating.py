@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score
 
 # From gui_
 # List for all symptoms
-symptoms = [
+SYMPTOMS= [
     "back_pain",
     "constipation",
     "abdominal_pain",
@@ -106,7 +106,7 @@ symptoms = [
     "yellow_crust_ooze",
 ]
 
-disease = [
+DISEASE= [
     "Fungal infection",
     "Allergy",
     "GERD",
