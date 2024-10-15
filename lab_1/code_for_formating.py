@@ -1,7 +1,10 @@
+import os
+
 import numpy as np 
 import pandas as pd
-
-from tkinter import *
+import tkinter
+from sklearn import tree
+from sklearn.metrics import accuracy_score
 
 # From gui_
 # List for all symptoms
@@ -149,7 +152,6 @@ disease = [
 
 # Loop will be used when doing prediction we need to add all symptoms in symptoms list 
 l2 = [0] * len(symptoms)
-import os
 print("Current working directory:", os.getcwd())
 
 # Testing data df 
@@ -270,13 +272,11 @@ np.ravel(y_test)
 
 # Algorithms for training and prediction we will use 3 algorithm
 def decision_tree():
-    from sklearn import tree
     clf3=tree.DecisionTreeClassifier() # Empty model for decision tree 
     # Training x with y 
     clf3 = clf3.fit(x, y)
     
     # Calculating accuracy 
-    from sklearn.metrics import accuracy_score
     y_pred=clf3.predict(x_test)
     print(accuracy_score(y_test,y_pred))
     print(accuracy_score(y_test,y_pred, normalize=False))
