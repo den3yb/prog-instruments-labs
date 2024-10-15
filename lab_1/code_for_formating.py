@@ -2,7 +2,7 @@ import os
 
 import numpy as np 
 import pandas as pd
-import tkinter
+from tkinter import StringVar, Label, Entry, OptionMenu, Button, END
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 
@@ -151,7 +151,7 @@ DISEASE= [
 ]
 
 # Loop will be used when doing prediction we need to add all symptoms in symptoms list 
-l2 = [0] * len(symptoms)
+l2 = [0] * len(SYMPTOMS)
 print("Current working directory:", os.getcwd())
 
 # Testing data df 
@@ -208,7 +208,7 @@ df.replace(
 )
 
 # X data is symptoms 
-x = df[symptoms]
+x = df[SYMPTOMS]
 
 # Diseases which disease is exist 
 y = df[["prognosis"]]
@@ -265,107 +265,100 @@ tr.replace(
     inplace=True,
 )
 
-x_test = tr[symptoms]
+x_test = tr[SYMPTOMS]
 y_test = tr[["prognosis"]]
 np.ravel(y_test)
 
 
-# Algorithms for training and prediction we will use 3 algorithm
-def decision_tree():
-    clf3=tree.DecisionTreeClassifier() # Empty model for decision tree 
-    # Training x with y 
+
+def decision_tree(): 
+
+    """ The first algorithm is for training, with the creation of a model and training y on x, 
+    and marks the corresponding symptoms """
+
+    clf3=tree.DecisionTreeClassifier() 
     clf3 = clf3.fit(x, y)
     
-    # Calculating accuracy 
     y_pred=clf3.predict(x_test)
     print(accuracy_score(y_test,y_pred))
     print(accuracy_score(y_test,y_pred, normalize=False))
    
-    # We add the following line here to make sure that it will be restting every time i try to predict new disicion 
-    l2 = [0] * len(symptoms)
+    l2 = [0] * len(SYMPTOMS)
     psymptoms = [Symptom1.get(), Symptom2.get(), Symptom3.get(), Symptom4.get(), Symptom5.get()]
-    # Check if any of symptoms is exist replace its 0 value by 1 to check the desiease
-    for k in range(0, len(symptoms)):
-        #print(k,)
+    for k in range(0, len(SYMPTOMS)):
         for z in psymptoms:
-    # If symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
-            if(z == symptoms[k]):
+            if(z == SYMPTOMS[k]):
                 l2[k] = 1
                 break
     inputtest=[l2]
     print(l2)
-    # Prediction the disease based on given syptoms
     predict=clf3.predict(inputtest)
-    # To take it values 
     predicted=predict[0]
     h='no'
-    for a in range(0, len(disease)):
+    for a in range(0, len(DISEASE)):
         if(predicted == a ):
             h ='yes'
         if (h == 'yes'):
-            # If the disease is found put its name in the text box t1 after deleting whats inside the box 
             t1.delete("1.0",END)
-            t1.insert(END, disease[a])
+            t1.insert(END, DISEASE[a])
     
         else:
             t1.delete("1.0", END)
             t1.insert(END,"Not Found")
             
-# Second algorithm
 def random_forest():
+
+    """ The second algorithm learns to label diseases based on existing symptoms """
+
     from sklearn.ensemble import RandomForestClassifier 
     clf4=RandomForestClassifier()
     clf4 = clf4.fit(x, np.ravel(y))
     
     
-    # Calculating accuracy
     from sklearn.metrics import accuracy_score
     y_pred=clf4.predict(x_test)
     print(accuracy_score(y_test, y_pred))
     print(accuracy_score(y_test, y_pred, normalize=False))
-    l2 = [0] * len(symptoms)
+    l2 = [0] * len(SYMPTOMS)
     psymptoms = [Symptom1.get(), Symptom2.get(), Symptom3.get(), Symptom4.get(), Symptom5.get()]
-    # Check if any of symptoms is exist replace its 0 value by 1 to check the desiease
-    for k in range(0, len(symptoms)):
+    for k in range(0, len(SYMPTOMS)):
         for z in psymptoms:
-# If symptom in main symptoms list matches with any in of psymptom list replace its place of l2 by 1
-            if(z == symptoms[k]):
+            if(z == SYMPTOMS[k]):
                 l2[k] = 1
                 break
     inputtest = [l2]
     print(l2)
-    # Prediction the disease based on given syptoms
+
     predict = clf4.predict(inputtest)
-    # To take it values 
     predicted=predict[0]
     h='no'
-    for a in range(0,len(disease)):
+    for a in range(0,len(DISEASE)):
         if(predicted == a ):
             h = 'yes'
         if (h == 'yes'):
-            # If the disease is found put its name in the text box t1 after deleting whats inside the box 
             t2.delete("1.0", END)
-            t2.insert(END, disease[a])
+            t2.insert(END, DISEASE[a])
     
         else:
             t2.delete("1.0", END)
             t2.insert(END, "Not Found")
 
-# Third algo 
 def naive_bayes():
+
+    """ The third algorithm calculated accuracy """
+
     from sklearn.naive_bayes import GaussianNB
     gnb = GaussianNB()
     gnb = gnb.fit(x, np.ravel(y))
 
-    # Calculating accuracy
     y_pred = gnb.predict(x_test)
     print(accuracy_score(y_test, y_pred))
     print(accuracy_score(y_test, y_pred,normalize = False))
 
     psymptoms = [Symptom1.get(), Symptom2.get(), Symptom3.get(), Symptom4.get(), Symptom5.get()]
-    for k in range(0, len(symptoms)):
+    for k in range(0, len(SYMPTOMS)):
         for z in psymptoms:
-            if(z == symptoms[k]):
+            if(z == SYMPTOMS[k]):
                 l2[k] = 1
 
     inputtest = [l2]
@@ -373,14 +366,14 @@ def naive_bayes():
     predicted = predict[0]
 
     h ='no'
-    for a in range(0,len(disease)):
+    for a in range(0,len(DISEASE)):
         if(predicted == a):
             h='yes'
             break
 
     if (h =='yes'):
         t3.delete("1.0", END)
-        t3.insert(END, disease[a])
+        t3.insert(END, DISEASE[a])
     else:
         t3.delete("1.0", END)
         t3.insert(END, "Not Found")
@@ -441,7 +434,7 @@ ranfLb = Label(root, text = "NaiveBayes", fg = "white", bg = "red")
 ranfLb.grid(row = 19, column = 0, pady = 10, sticky = W)
 
 # Entries
-OPTIONS = sorted(symptoms)
+OPTIONS = sorted(SYMPTOMS)
 
 NameEn = Entry(root, textvariable=Name)
 NameEn.grid(row = 6, column = 1)
